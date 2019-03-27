@@ -1,0 +1,133 @@
+1. 슬라이스 사용하기: 
+a=[1,2,3,4}
+a[0:1]->1,2
++리버스 인덱싱:맨 끝부터 -1,-2순으로 인덱스 지정
+
+2. 서식문자 사용하기:
+" I ate %d apples. So i was sick for %d months"%(7,8)
+%d는 숫자 %s 는 문자
+%10s는 왼쪽 공백 10칸 생성
+%-10s는 오른쪽 공백 10칸 생성
+%0.4f는 소숫점 아래 4자리까지 출력
+
+3. 문자열에서 문자 추출하기: 
+a="Python is best choice"
+a.count(b)->1(b의 개수)
+a.find(b)->10(b의 위치인덱스)(없는 문자는 -1출력)
+a.index(b)->10 위랑 똑같음 but 없는 문자는 에러뜸
+
+4. 
+
+a=","
+>>> a.join("abcd")
+'a,b,c,d'
+>>> a="int"
+>>> a.upper()
+'INT'
+>>> a.lower()
+'int'
+>>> a="lstrip()
+  File "<stdin>", line 1
+    a="lstrip()
+              ^
+SyntaxError: EOL while scanning string literal
+>>> a="   hi"
+>>> a.lstrip()
+'hi'
+>>> a.rstrip()
+'   hi'
+>>> a.strip()
+'hi'
+>>> a="Life is too short"
+>>> a.replace("Life","Your head")
+'Your head is too short'
+>>> a.split()
+['Life', 'is', 'too', 'short']
+>>> a=a.replace("Life", "Your head")
+>>> a
+'Your head is too short'
+>>> a.split(":")
+['Your head is too short']
+>>> a=list(range(10))
+>>> a.split(":"
+... a.split(":")
+  File "<stdin>", line 2
+    a.split(":")
+    ^
+SyntaxError: invalid syntax
+>>> a,split(":")
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+NameError: name 'split' is not defined
+>>> a=[1,2,3,['a', 'b', 'c']]
+>>> a[3][1]
+'b'
+>>> a[3][2]
+'c'
+a=[1,2,3]
+>>> a[1:2]
+[2]
+>>> a[1:2]={'a','b','c']
+  File "<stdin>", line 1
+    a[1:2]={'a','b','c']
+                       ^
+SyntaxError: invalid syntax
+>>>
+>>> a[1:2]=['a','b','c']
+>>> a
+[1, 'a', 'b', 'c', 3]
+>>> a.append(4)
+>>> a
+[1, 'a', 'b', 'c', 3, 4]
+>>> a.append([3,4])
+>>> a
+[1, 'a', 'b', 'c', 3, 4, [3, 4]]
+>>> a=[1,4,3,7,0]
+>>> a.sort
+<built-in method sort of list object at 0x035FB738>
+>>> a.sort()
+>>> a
+[0, 1, 3, 4, 7]
+>>> a.reverse()
+>>>
+>>> a
+[7, 4, 3, 1, 0]
+>>> a.insert(0,4)
+>>> a
+[4, 7, 4, 3, 1, 0]
+>>> a.remove(3)
+>>> a
+[4, 7, 4, 1, 0]
+>>> a=[3,3,3,3,3]
+>>> a.remove(3)
+>>> a
+[3, 3, 3, 3]
+>>> a=[1,2,3]
+>>> a.pop()
+3
+>>> a
+[1, 2]
+>>> a.pop()
+2
+>>> a=[1,2,3]
+>>> a.pop(1)
+2
+>>> a
+[1, 3]
+>>> a=[1,2,3,4,5,6,7]
+>>> a.pop(5)
+6
+>>> a
+[1, 2, 3, 4, 5, 7]
+>>> a=[1,2,3]
+>>> a.extend([4,5])
+>>> a
+[1, 2, 3, 4, 5]
+>>> b=[6,7]
+>>> a.extend(b)
+>>> a
+[1, 2, 3, 4, 5, 6, 7]
+
+리스트 안에 리스트 넣기:  <br>
+a=[1,2,3,['a', 'b', 'c']]  <br>
+a[3][0]하면 a가 나온다  <br>
