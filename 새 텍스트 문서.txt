@@ -1,21 +1,135 @@
+import RPi.GPIO as GPIO
 import time
-import csv
 from datetime import date
+import csv
 
-now = time.gmtime(time.time()+32400)
-year = now.tm_year
-month = now.tm_mon
-day = now.tm_mday
-hour = now.tm_hour
-min = now.tm_min
-sec = now.tm_sec
-print(year,month,day,hour,min,sec)
-'''time_now = today.isoformat() + at.isoformat()
-print(time_now)'''
-time_now=str(year)+'-'+str(month)+'-'+str(day)+'-'+str(hour)+'-'+str(min)+'-'+str(sec)
-print(time_now)
+#Pin number
 
-f = open("\data.csv" 'a')
-csv_writer = csv.writer(f)
-csv_writer.writerow([1,time_now])
-f.close()
+servo_pin = 18 #18=servo_motor
+trig = 2
+echo = 3  #2,3=trig,echo pin in HC-SR04
+PIR_SENSOR = 21  #21=PIR_SENSOR
+
+GPIO.setmode(GPIO.BCM)
+
+#pin_mode setting
+GPIO.setup(servo_pin, GPIO.OUT)
+GPIO.setup(trig, GPIO.OUT)
+GPIO.setup(echo, GPIO.IN)
+GPIO.setup(PIR_SENSOR, GPIO.IN)
+
+#servo setting
+p = GPIO.PWM(servo_pin, 50)
+p.start(0)
+#PIR_SENSOR (10sec count)
+cnt=0
+last_distance=0
+
+cnt1=0 #for one day one print
+try:
+    while True:
+        input_state = GPIO.input(PIR_SENSOR) #input the motion detect
+        #HC-SR04 distance
+        GPIO.output(trig,False)
+        time.sleep(0.5)
+
+        GPIO.output(trig, True)
+        time.sleep(0.00001)
+        GPIO.output(trig, False)
+
+        while GPIO.input(echo)==0:
+            pulse_start=time.time()
+
+        while GPIO.input(echo)==1:
+            pulse_end = time.time()
+
+        pulse_duration = pulse_end-pulse_start
+        distance = pulse_duration*17000
+        distance = round(distance,2)
+        if distance>=1000:
+            distance = last_distance
+        last_distance=distance #excepting wrong distance over than 3000
+        #printing the state
+        print("distance: %d"%distance)
+        if input_state == True:
+            print("Motion detected")
+            cnt=0
+        else:
+            print("Motion not detected")
+            cnt+=1
+	    
+	#time setting
+	now = time.gmtime(time.time()+32400)
+	year = now.tm_year
+	month = now.tm_mon
+	day = now.tm_mday
+	hour = now.tm_hour
+	_min = now.tm_min
+	sec = now.tm_sec
+	
+	cnt_date = 1
+	average_time = 8*3600
+	all_time = 0
+	
+	if hour==23 and _min==59 and sec==59:
+		cnt1=0 #enable printing sleeping time or waking up time
+		cnt_date+=1 #for dividing, make a average_time
+	#making alarm
+	sec_time1 = 3600*hour+60*_min+sec
+	if average_time == sec_time1:
+	    print("You have to sleep right now")
+        #activating code
+        if (distance <= 180 and cnt >= 10): #servo turn on activate(8)-motion not detected for 10sec & HC-SR04 distance<=180
+	    
+	    time_date=str(year)+'-'+str(month)+'-'+str(day)
+	    time_time=str(hour)+'-'+str(_min)+'-'+str(sec)
+	    print(time_date)
+	    print(time_time)
+	    
+	    if cnt1>=1:
+		continue
+	
+	    p.ChangeDutyCycle(8)
+            print("turn off the light\n")
+            time.sleep(0.49999)
+	    
+	    f = open("/home/pi/data.csv", 'a')
+	    csv_writer = csv.writer(f)
+	    csv_writer.writerow(["Started sleeping",time_date,time_time])
+	    f.close()
+	    sec_time2 = 3600*hour+60*_min+sec
+	    all_time +=sec_time2
+	    average_time = all_time//cnt_date
+	    cnt1+=1
+
+	    
+
+        else: #servo turn off activate(5)
+	    
+	    time_date=str(year)+'-'+str(month)+'-'+str(day)
+	    time_time=str(hour)+'-'+str(_min)+'-'+str(sec)
+	    print(time_date)
+	    print(time_time)
+		
+	    
+		
+	    p.ChangeDutyCycle(5)
+            print("turn on the light\n")
+            time.sleep(0.5)
+	    
+	    if cnt1>=1:
+		continue`	
+
+	    f = open("/home/pi/data.csv" ,'a')
+	    csv_writer = csv.writer(f)
+	    csv_writer.writerow(["Ended sleeping",time_date,time_time])
+	    f.close()
+	    cnt1+=1
+
+            
+	
+
+
+except KeyboardInterrupt:
+    p.stop()
+GPIO.cleanup()
