@@ -15,7 +15,7 @@ print(time_now)'''
 time_now=str(year)+'-'+str(month)+'-'+str(day)+'-'+str(hour)+'-'+str(min)+'-'+str(sec)
 print(time_now)
 
-f = open("/home/pi/data.csv" 'a')
+f = open("\data.csv" 'a')
 csv_writer = csv.writer(f)
 csv_writer.writerow([1,time_now])
 f.close()
