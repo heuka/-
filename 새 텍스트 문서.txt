@@ -1,0 +1,19 @@
+import time
+from datetime import date
+
+now = time.gmtime(time.time()+32400)
+year = now.tm_year
+month = now.tm_mon
+day = now.tm_mday
+hour = now.tm_hour
+min = now.tm_min
+sec = now.tm_sec
+print(year,month,day,hour,min,sec)
+'''time_now = today.isoformat() + at.isoformat()
+print(time_now)'''
+time_now=str(year)+'-'+str(month)+'-'+str(day)+'-'+str(hour)+'-'+str(min)+'-'+str(sec)
+print(time_now)
+
+f = open("C:/testAI/%s.html"%time_now, 'w')
+f.write
+f.close()
